@@ -1,0 +1,341 @@
+/* Design System */
+:root {
+    /* Palette */
+    --primary: #006a38;
+    --primary-gradient: linear-gradient(135deg, #006a38, #008649);
+    --secondary: #745b00;
+    --secondary-container: #ffcc00;
+    --tertiary: #b7102a;
+    --surface: #f5fbf2;
+    --surface-container-low: #eff5ed;
+    --surface-container-highest: #dee4dc;
+    --surface-lowest: #ffffff;
+    --on-surface: #171d18;
+
+    /* Ombres & Rayons */
+    --shadow-editorial: 0 10px 32px rgba(23, 29, 24, 0.06);
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+}
+
+/* Réinitialisation stricte */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* No-Line Rule: Aucune bordure standard autorisée */
+    border: none; 
+}
+
+body {
+    background-color: var(--surface);
+    color: var(--on-surface);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .logo {
+    font-family: 'Manrope', sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Navbar Level 0 */
+.navbar {
+    background-color: var(--surface);
+    padding: 24px 48px;
+    margin-bottom: 20px;
+}
+
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.nav-links {
+    display: flex;
+    gap: 32px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--on-surface);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 16px;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    background-color: var(--surface-container-low);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* Hero Section (Bento) */
+.hero-bento {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 60px;
+}
+
+.display-title {
+    font-size: 4rem;
+    line-height: 1.05;
+    font-weight: 800;
+    margin-bottom: 20px;
+    letter-spacing: -0.03em;
+}
+
+.text-primary {
+    color: var(--primary);
+}
+
+.body-text {
+    font-size: 1.1rem;
+    color: #4a554e; /* Neutral on-surface */
+    margin-bottom: 40px;
+    max-width: 90%;
+}
+
+/* Glass & Gradient Rule */
+.search-glass {
+    background: rgba(245, 251, 242, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 24px;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-editorial);
+    background-color: var(--surface-lowest);
+}
+
+.inputs-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.input-group {
+    flex: 1;
+    background: var(--surface-container-low);
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #4a554e;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.input-group input {
+    width: 100%;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    color: var(--on-surface);
+}
+
+.btn-primary {
+    width: 100%;
+    background: var(--primary-gradient);
+    color: var(--surface-lowest);
+    padding: 16px;
+    border-radius: var(--radius-xl);
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+/* Hero Image Card (Asymmetry) */
+.hero-image-card {
+    background-color: var(--surface-container-highest);
+    border-radius: var(--radius-xl);
+    position: relative;
+    min-height: 400px;
+    /* Placeholder pour l'image du bâtiment */
+    background-image: url('https://images.unsplash.com/photo-1513407030348-c983a97b98d8?q=80&w=1000&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+}
+
+.floating-badge {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    background: var(--surface-lowest);
+    padding: 16px 24px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--shadow-editorial);
+}
+
+.badge-icon {
+    background: var(--secondary-container);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.badge-title {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.badge-sub {
+    font-size: 0.85rem;
+    color: #4a554e;
+}
+
+/* Sections & Bento Grid */
+.routes-section {
+    margin-top: 40px;
+    margin-bottom: 80px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 32px;
+}
+
+.label-sm {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--primary);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.headline-title {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.link-primary {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 24px; /* Règle d'espacement au lieu de bordures */
+}
+
+/* Route Cards Level 2 */
+.route-card {
+    background-color: var(--surface-lowest);
+    border-radius: var(--radius-xl);
+    padding: 32px;
+    box-shadow: var(--shadow-editorial);
+    position: relative;
+    overflow: hidden;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+/* Variantes de couleurs */
+.route-card.yellow-theme {
+    background-color: var(--surface-container-low);
+}
+
+.route-card.red-theme {
+    background-color: var(--tertiary);
+    color: var(--surface-lowest);
+}
+
+.card-badge {
+    position: absolute;
+    top: 32px;
+    left: 32px;
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+}
+
+.yellow-theme .card-badge {
+    background-color: var(--secondary-container);
+    color: var(--on-surface);
+}
+
+.red-theme .card-badge {
+    background-color: rgba(255,255,255,0.2);
+    color: var(--surface-lowest);
+}
+
+.route-card h3 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    line-height: 1.2;
+}
+
+.card-meta {
+    display: flex;
+    gap: 12px;
+}
+
+.meta-chip {
+    background-color: var(--surface-container-highest);
+    color: var(--on-surface);
+    padding: 8px 16px;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.red-theme .meta-chip {
+    background-color: var(--surface-lowest);
+    color: var(--tertiary);
+}

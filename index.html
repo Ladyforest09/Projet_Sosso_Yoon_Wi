@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yoon Wi - Dakar Transit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+   <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">🚌 Yoon Wi</div>
+            <div class="nav-links">
+                <a href="#" onclick="alert('🗺️ La carte interactive des bus sera bientôt disponible !')">Carte</a>
+                <a href="#" onclick="alert('📍 Consultez la liste de tous les itinéraires ici.')">Itinéraires</a>
+                <a href="#" onclick="alert('⭐ Vos trajets quotidiens favoris apparaîtront ici.')">Favoris</a>
+            </div>
+            <div class="profile-actions">
+                <span class="icon" onclick="alert('🔔 Vous n\'avez pas de nouvelle notification.')">🔔</span>
+                <span class="icon profile" onclick="alert('👤 Ouverture des paramètres du profil...')">👤</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="hero-bento">
+            <div class="hero-text-card">
+                <h1 class="display-title">Ne vous perdez plus dans <span class="text-primary">Dakar.</span></h1>
+                <p class="body-text">Trouvez la bonne ligne de bus Tata en un clic. Votre guide urbain pour naviguer dans la capitale.</p>
+                
+                <div class="search-glass">
+                    <div class="inputs-row">
+                        <div class="input-group">
+                            <label>📍 Point de départ</label>
+                            <input type="text" id="start-point" placeholder="Ex: Parcelles Assainies...">
+                        </div>
+                        <div class="input-group">
+                            <label>🚩 Destination</label>
+                            <input type="text" id="end-point" placeholder="Ex: UCAD...">
+                        </div>
+                    </div>
+                    <button id="search-btn" class="btn-primary">🔍 Rechercher</button>
+                </div>
+            </div>
+
+            <div class="hero-image-card">
+                <div class="floating-badge">
+                    <span class="badge-icon">🧭</span>
+                    <div>
+                        <p class="badge-title">Temps réel</p>
+                        <p class="badge-sub">Vérifiez les arrivées en direct</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="routes-section">
+            <div class="section-header">
+                <div>
+                    <span class="label-sm">ITINÉRAIRES FRÉQUENTS</span>
+                    <h2 class="headline-title">Lignes Populaires</h2>
+                </div>
+                <a href="#" class="link-primary">Voir tout →</a>
+            </div>
+
+            <div id="routes-container" class="bento-grid">
+                </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
