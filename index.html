@@ -15,13 +15,13 @@
         <div class="nav-content">
             <div class="logo">🚌 Yoon Wi</div>
             <div class="nav-links">
-                <a href="#" onclick="alert('🗺️ La carte interactive des bus sera bientôt disponible !')">Carte</a>
-                <a href="#" onclick="alert('📍 Consultez la liste de tous les itinéraires ici.')">Itinéraires</a>
-                <a href="#" onclick="alert('⭐ Vos trajets quotidiens favoris apparaîtront ici.')">Favoris</a>
+                <a href="carte.html">Carte</a>
+                <a href="itineraires.html">Itinéraires</a>
+                <a href="favoris.html">Favoris</a>
             </div>
             <div class="profile-actions">
-                <span class="icon" onclick="alert('🔔 Vous n\'avez pas de nouvelle notification.')">🔔</span>
-                <span class="icon profile" onclick="alert('👤 Ouverture des paramètres du profil...')">👤</span>
+                <a href="notifications.html" class="icon" title="Notifications">🔔</a>
+                <a href="profil.html" class="icon profile" title="Profil">👤</a>
             </div>
         </div>
     </nav>
@@ -31,7 +31,6 @@
             <div class="hero-text-card">
                 <h1 class="display-title">Ne vous perdez plus dans <span class="text-primary">Dakar.</span></h1>
                 <p class="body-text">Trouvez la bonne ligne de bus Tata en un clic. Votre guide urbain pour naviguer dans la capitale.</p>
-                
                 <div class="search-glass">
                     <div class="inputs-row">
                         <div class="input-group">
@@ -64,11 +63,10 @@
                     <span class="label-sm">ITINÉRAIRES FRÉQUENTS</span>
                     <h2 class="headline-title">Lignes Populaires</h2>
                 </div>
-                <a href="#" class="link-primary">Voir tout →</a>
+                <a href="itineraires.html" class="link-primary">Voir tout →</a>
             </div>
 
-            <div id="routes-container" class="bento-grid">
-                </div>
+            <div id="routes-container" class="bento-grid"></div>
         </section>
     </main>
 
