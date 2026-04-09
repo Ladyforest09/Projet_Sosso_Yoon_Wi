@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favoris – Yoon Wi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .fav-layout { max-width: 900px; margin: 0 auto; padding: 0 24px 60px; }
+        .section-title { font-family: 'Manrope', sans-serif; font-weight: 700; margin-bottom: 16px; color: #4a554e; text-transform: uppercase; font-size: 0.78rem; letter-spacing: 0.05em; }
+        .add-fav-btn { background: var(--primary-gradient); color: white; border-radius: 14px; padding: 12px 24px; font-family: 'Manrope', sans-serif; font-weight: 700; cursor: pointer; margin-top: 20px; display: inline-block; font-size: 0.9rem; text-decoration: none; }
+        .trajet-card { background: var(--surface-lowest); border-radius: var(--radius-xl); padding: 24px; box-shadow: var(--shadow-editorial); margin-bottom: 16px; }
+        .tact-btn { background: var(--surface-container-low); border-radius: 99px; padding: 8px 16px; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .tact-btn:hover { background: var(--secondary-container); }
+        .tact-btn.danger:hover { background: #fdecea; color: var(--tertiary); }
+        .trajet-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .next-bus { display: flex; align-items: center; gap: 12px; background: var(--surface-container-low); border-radius: 14px; padding: 14px 18px; }
+        .next-bus-time { font-family: 'Manrope', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--primary); }
+        .next-bus-label { font-size: 0.82rem; color: #4a554e; }
+        .stats-mini { display: flex; gap: 12px; margin-top: 16px; }
+        .stat-mini { background: var(--surface-container-low); border-radius: 12px; padding: 12px 16px; flex: 1; text-align: center; }
+        .stat-mini .n { font-family: 'Manrope', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--primary); }
+        .stat-mini .l { font-size: 0.75rem; color: #4a554e; margin-top: 2px; }
+        .horaires-table { width: 100%; }
+        .horaires-table th { font-size: 0.78rem; font-weight: 700; color: #4a554e; text-align: left; padding: 8px 0; text-transform: uppercase; letter-spacing: 0.05em; }
+        .horaires-table td { padding: 10px 0; font-size: 0.9rem; }
+        .horaires-table tr:not(:last-child) td { border-bottom: 1px solid var(--surface-container-low); }
+        .hor-badge { display: inline-block; background: var(--secondary-container); color: var(--on-surface); padding: 4px 10px; border-radius: 8px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo">🚌 Yoon Wi</a>
+            <div class="nav-links">
+                <a href="carte.html">Carte</a>
+                <a href="itineraires.html">Itinéraires</a>
+                <a href="favoris.html" style="color:var(--primary);font-weight:700">Favoris</a>
+            </div>
+            <div class="profile-actions">
+                <a href="notifications.html" class="icon">🔔</a>
+                <a href="profil.html" class="icon">👤</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="page-header-content">
+            <a href="index.html" class="back-link">← Retour à l'accueil</a>
+            <div class="page-title">⭐ Favoris</div>
+            <div class="page-subtitle">Vos lignes et trajets quotidiens enregistrés</div>
+        </div>
+    </div>
+
+    <div class="fav-layout">
+        <div class="section-title">Mes trajets quotidiens</div>
+
+        <!-- Ligne 37 -->
+        <div class="fav-card" style="margin-bottom:16px;" onclick="toggle('detail-37')">
+            <div class="fav-line-badge">37</div>
+            <div class="fav-info">
+                <div class="fav-name">ESP ➔ Maristes</div>
+                <div class="fav-meta">⏱ 25 min · 🎫 150 FCFA · Utilisé 3× cette semaine</div>
+            </div>
+            <div class="fav-star">⭐</div>
+        </div>
+        <div id="detail-37" class="trajet-card" style="display:none;margin-bottom:24px;">
+            <div class="next-bus">
+                <div>
+                    <div class="next-bus-label">Prochain départ</div>
+                    <div class="next-bus-time">Dans 8 min</div>
+                    <div class="next-bus-label">Depuis l'arrêt ESP</div>
+                </div>
+                <div style="margin-left:auto"><div class="hor-badge">08:47</div></div>
+            </div>
+            <div class="stats-mini">
+                <div class="stat-mini"><div class="n">14</div><div class="l">Trajets ce mois</div></div>
+                <div class="stat-mini"><div class="n">5h 50</div><div class="l">Temps en bus</div></div>
+                <div class="stat-mini"><div class="n">2 100</div><div class="l">FCFA dépensés</div></div>
+            </div>
+            <div style="margin-top:16px">
+                <table class="horaires-table">
+                    <thead><tr><th>Heure</th><th>Durée</th><th>Via</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="hor-badge">08:47</span></td><td>25 min</td><td>UCAD, Point E</td></tr>
+                        <tr><td><span class="hor-badge">09:15</span></td><td>25 min</td><td>UCAD, Castors</td></tr>
+                        <tr><td><span class="hor-badge">09:43</span></td><td>28 min</td><td>UCAD, Point E</td></tr>
+                        <tr><td><span class="hor-badge">10:10</span></td><td>25 min</td><td>UCAD, Castors</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="trajet-actions" style="margin-top:16px">
+                <div class="tact-btn" onclick="alert('🔔 Alerte configurée pour la ligne 37')">🔔 Activer une alerte</div>
+                <div class="tact-btn" onclick="window.location='carte.html'">🗺️ Voir sur la carte</div>
+                <div class="tact-btn danger" onclick="alert('🗑️ Trajet retiré des favoris')">🗑️ Supprimer</div>
+            </div>
+        </div>
+
+        <!-- Ligne 44 -->
+        <div class="fav-card" style="margin-bottom:16px;" onclick="toggle('detail-44')">
+            <div class="fav-line-badge">44</div>
+            <div class="fav-info">
+                <div class="fav-name">Parcelles ➔ Plateau</div>
+                <div class="fav-meta">⏱ 30 min · 🎫 150 FCFA · Utilisé 2× cette semaine</div>
+            </div>
+            <div class="fav-star">⭐</div>
+        </div>
+        <div id="detail-44" class="trajet-card" style="display:none;margin-bottom:24px;">
+            <div class="next-bus">
+                <div>
+                    <div class="next-bus-label">Prochain départ</div>
+                    <div class="next-bus-time">Dans 12 min</div>
+                    <div class="next-bus-label">Depuis l'arrêt Parcelles</div>
+                </div>
+                <div style="margin-left:auto"><div class="hor-badge">09:01</div></div>
+            </div>
+            <div class="stats-mini">
+                <div class="stat-mini"><div class="n">9</div><div class="l">Trajets ce mois</div></div>
+                <div class="stat-mini"><div class="n">4h 30</div><div class="l">Temps en bus</div></div>
+                <div class="stat-mini"><div class="n">1 350</div><div class="l">FCFA dépensés</div></div>
+            </div>
+            <div class="trajet-actions" style="margin-top:16px">
+                <div class="tact-btn" onclick="alert('🔔 Alerte configurée pour la ligne 44')">🔔 Activer une alerte</div>
+                <div class="tact-btn" onclick="window.location='carte.html'">🗺️ Voir sur la carte</div>
+                <div class="tact-btn danger" onclick="alert('🗑️ Trajet retiré des favoris')">🗑️ Supprimer</div>
+            </div>
+        </div>
+
+        <!-- Ligne 78 -->
+        <div class="fav-card" style="margin-bottom:32px;" onclick="toggle('detail-78')">
+            <div class="fav-line-badge">78</div>
+            <div class="fav-info">
+                <div class="fav-name">Ouakam ➔ Maristes</div>
+                <div class="fav-meta">⏱ 40 min · 🎫 200 FCFA · Utilisé 1× cette semaine</div>
+            </div>
+            <div class="fav-star">⭐</div>
+        </div>
+        <div id="detail-78" class="trajet-card" style="display:none;margin-bottom:32px;">
+            <div class="next-bus">
+                <div>
+                    <div class="next-bus-label">Prochain départ</div>
+                    <div class="next-bus-time">Dans 20 min</div>
+                    <div class="next-bus-label">Depuis l'arrêt Ouakam</div>
+                </div>
+                <div style="margin-left:auto"><div class="hor-badge">09:09</div></div>
+            </div>
+            <div class="trajet-actions" style="margin-top:16px">
+                <div class="tact-btn" onclick="alert('🔔 Alerte configurée pour la ligne 78')">🔔 Activer une alerte</div>
+                <div class="tact-btn" onclick="window.location='carte.html'">🗺️ Voir sur la carte</div>
+                <div class="tact-btn danger" onclick="alert('🗑️ Trajet retiré des favoris')">🗑️ Supprimer</div>
+            </div>
+        </div>
+
+        <!-- Ajouter un favori -->
+        <div class="section-title">Ajouter un trajet</div>
+        <div class="info-card" style="text-align:center;padding:40px;">
+            <div style="font-size:2.5rem;margin-bottom:12px">➕</div>
+            <h3>Enregistrer un nouveau trajet</h3>
+            <p>Parcourez les itinéraires disponibles et appuyez sur ⭐ pour les ajouter à vos favoris.</p>
+            <a href="itineraires.html" class="add-fav-btn">Parcourir les itinéraires</a>
+        </div>
+    </div>
+
+    <script>
+        function toggle(id) {
+            const el = document.getElementById(id);
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>

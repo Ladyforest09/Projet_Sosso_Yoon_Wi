@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte – Yoon Wi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .carte-layout { display: grid; grid-template-columns: 340px 1fr; gap: 24px; max-width: 1200px; margin: 0 auto; padding: 0 24px 60px; }
+        .carte-sidebar { display: flex; flex-direction: column; gap: 16px; }
+        .search-box { background: var(--surface-lowest); border-radius: var(--radius-xl); padding: 24px; box-shadow: var(--shadow-editorial); }
+        .search-box h3 { font-family: 'Manrope', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
+        .sb-input { background: var(--surface-container-low); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .sb-input span { font-size: 1rem; }
+        .sb-input input { background: transparent; outline: none; font-family: 'Inter', sans-serif; font-size: 0.95rem; color: var(--on-surface); width: 100%; }
+        .sb-btn { width: 100%; background: var(--primary-gradient); color: white; padding: 14px; border-radius: 14px; font-family: 'Manrope', sans-serif; font-weight: 700; cursor: pointer; font-size: 0.95rem; }
+        .sb-btn:hover { opacity: 0.9; }
+        .lines-list { background: var(--surface-lowest); border-radius: var(--radius-xl); padding: 24px; box-shadow: var(--shadow-editorial); flex: 1; overflow-y: auto; max-height: 420px; }
+        .lines-list h3 { font-family: 'Manrope', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
+        .line-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; cursor: pointer; transition: all 0.15s; border-radius: 10px; }
+        .line-item:hover { background: var(--surface-container-low); padding-left: 8px; }
+        .line-num { width: 40px; height: 40px; border-radius: 10px; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.85rem; color: white; flex-shrink: 0; }
+        .line-num.express { background: linear-gradient(135deg, #b7102a, #e53935); }
+        .line-info { flex: 1; }
+        .line-name { font-weight: 600; font-size: 0.9rem; }
+        .line-stops { font-size: 0.78rem; color: #4a554e; margin-top: 2px; }
+        .line-status { font-size: 0.75rem; }
+        .status-ok { color: var(--primary); }
+        .status-delay { color: #e65100; }
+        .map-main { border-radius: var(--radius-xl); overflow: hidden; position: relative; min-height: 600px; }
+        .dakar-map { width: 100%; height: 100%; min-height: 600px; background: linear-gradient(160deg, #b2dfdb 0%, #80cbc4 30%, #a5d6a7 60%, #c8e6c9 100%); position: relative; display: flex; align-items: center; justify-content: center; }
+        .map-overlay { position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1580746738700-0d9d3e5e7f86?q=80&w=1200&auto=format&fit=crop') center/cover; opacity: 0.15; border-radius: var(--radius-xl); }
+        .map-svg { width: 100%; height: 100%; }
+        .map-controls { position: absolute; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 8px; z-index: 10; }
+        .map-ctrl-btn { width: 40px; height: 40px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        .map-ctrl-btn:hover { background: var(--surface-container-low); }
+        .map-legend { position: absolute; bottom: 20px; left: 20px; background: white; border-radius: 14px; padding: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); z-index: 10; }
+        .map-legend h4 { font-family: 'Manrope', sans-serif; font-size: 0.85rem; font-weight: 700; margin-bottom: 10px; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; margin-bottom: 6px; }
+        .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .live-badge { position: absolute; top: 20px; left: 20px; background: white; border-radius: 99px; padding: 8px 16px; display: flex; align-items: center; gap: 8px; font-family: 'Manrope', sans-serif; font-size: 0.85rem; font-weight: 700; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #e53935; animation: blink 1s infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+        .bus-pin { position: absolute; background: var(--primary); color: white; border-radius: 99px; padding: 5px 10px; font-family: 'Manrope', sans-serif; font-size: 0.75rem; font-weight: 700; white-space: nowrap; cursor: pointer; box-shadow: 0 3px 10px rgba(0,106,56,0.4); animation: float 3s ease-in-out infinite; }
+        .bus-pin.red { background: var(--tertiary); box-shadow: 0 3px 10px rgba(183,16,42,0.4); }
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+        @media(max-width:900px){ .carte-layout{grid-template-columns:1fr;} .map-main{min-height:400px;} }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo">🚌 Yoon Wi</a>
+            <div class="nav-links">
+                <a href="carte.html" style="color:var(--primary);font-weight:700">Carte</a>
+                <a href="itineraires.html">Itinéraires</a>
+                <a href="favoris.html">Favoris</a>
+            </div>
+            <div class="profile-actions">
+                <a href="notifications.html" class="icon">🔔</a>
+                <a href="profil.html" class="icon">👤</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="page-header-content">
+            <a href="index.html" class="back-link">← Retour à l'accueil</a>
+            <div class="page-title">🗺️ Carte Interactive</div>
+            <div class="page-subtitle">Suivez les bus Tata en temps réel sur la carte de Dakar</div>
+        </div>
+    </div>
+
+    <div class="carte-layout">
+        <div class="carte-sidebar">
+            <div class="search-box">
+                <h3>🔍 Planifier un trajet</h3>
+                <div class="sb-input">
+                    <span>📍</span>
+                    <input type="text" placeholder="Point de départ...">
+                </div>
+                <div class="sb-input">
+                    <span>🚩</span>
+                    <input type="text" placeholder="Destination...">
+                </div>
+                <button class="sb-btn">Trouver un itinéraire</button>
+            </div>
+
+            <div class="lines-list">
+                <h3>🚌 Lignes actives</h3>
+                <div class="line-item">
+                    <div class="line-num">37</div>
+                    <div class="line-info">
+                        <div class="line-name">ESP ➔ Maristes</div>
+                        <div class="line-stops">5 arrêts · 25 min</div>
+                    </div>
+                    <span class="line-status status-ok">● En service</span>
+                </div>
+                <div class="line-item">
+                    <div class="line-num express">121</div>
+                    <div class="line-info">
+                        <div class="line-name">Keur Massar ➔ UCAD</div>
+                        <div class="line-stops">5 arrêts · 45 min</div>
+                    </div>
+                    <span class="line-status status-ok">● En service</span>
+                </div>
+                <div class="line-item">
+                    <div class="line-num">44</div>
+                    <div class="line-info">
+                        <div class="line-name">Parcelles ➔ Plateau</div>
+                        <div class="line-stops">4 arrêts · 30 min</div>
+                    </div>
+                    <span class="line-status status-delay">⚠ Retard ~10 min</span>
+                </div>
+                <div class="line-item">
+                    <div class="line-num">78</div>
+                    <div class="line-info">
+                        <div class="line-name">Ouakam ➔ Maristes</div>
+                        <div class="line-stops">4 arrêts · 40 min</div>
+                    </div>
+                    <span class="line-status status-ok">● En service</span>
+                </div>
+                <div class="line-item">
+                    <div class="line-num">56</div>
+                    <div class="line-info">
+                        <div class="line-name">Yoff ➔ Sandaga</div>
+                        <div class="line-stops">5 arrêts · 35 min</div>
+                    </div>
+                    <span class="line-status status-ok">● En service</span>
+                </div>
+                <div class="line-item">
+                    <div class="line-num">15</div>
+                    <div class="line-info">
+                        <div class="line-name">HLM ➔ Médina</div>
+                        <div class="line-stops">4 arrêts · 18 min</div>
+                    </div>
+                    <span class="line-status status-delay">⚠ Retard ~5 min</span>
+                </div>
+                <div class="line-item">
+                    <div class="line-num">8</div>
+                    <div class="line-info">
+                        <div class="line-name">Guédiawaye ➔ Colobane</div>
+                        <div class="line-stops">4 arrêts · 50 min</div>
+                    </div>
+                    <span class="line-status status-ok">● En service</span>
+                </div>
+                <div class="line-item">
+                    <div class="line-num">11</div>
+                    <div class="line-info">
+                        <div class="line-name">Plateau ➔ Corniche Ouest</div>
+                        <div class="line-stops">4 arrêts · 20 min</div>
+                    </div>
+                    <span class="line-status status-ok">● En service</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-main">
+            <div class="dakar-map">
+                <div class="map-overlay"></div>
+
+                <div class="bus-pin" style="top:30%;left:40%;animation-delay:0s">🚌 L37</div>
+                <div class="bus-pin red" style="top:50%;left:60%;animation-delay:0.8s">🚌 L121</div>
+                <div class="bus-pin" style="top:65%;left:30%;animation-delay:1.6s">🚌 L44</div>
+                <div class="bus-pin" style="top:20%;left:70%;animation-delay:0.4s">🚌 L78</div>
+                <div class="bus-pin red" style="top:75%;left:55%;animation-delay:1.2s">🚌 L56</div>
+                <div class="bus-pin" style="top:45%;left:20%;animation-delay:2s">🚌 L15</div>
+
+                <svg class="map-svg" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;opacity:0.35">
+                    <line x1="50" y1="250" x2="550" y2="250" stroke="#006a38" stroke-width="3"/>
+                    <line x1="300" y1="50" x2="300" y2="450" stroke="#006a38" stroke-width="3"/>
+                    <line x1="50" y1="100" x2="550" y2="400" stroke="#b7102a" stroke-width="2" stroke-dasharray="6,3"/>
+                    <line x1="550" y1="100" x2="50" y2="400" stroke="#745b00" stroke-width="2" stroke-dasharray="4,4"/>
+                    <line x1="100" y1="50" x2="100" y2="450" stroke="#006a38" stroke-width="1.5" opacity="0.5"/>
+                    <line x1="500" y1="50" x2="500" y2="450" stroke="#006a38" stroke-width="1.5" opacity="0.5"/>
+                    <circle cx="300" cy="250" r="8" fill="#006a38"/>
+                    <circle cx="150" cy="250" r="6" fill="#006a38" opacity="0.7"/>
+                    <circle cx="450" cy="250" r="6" fill="#006a38" opacity="0.7"/>
+                    <circle cx="300" cy="150" r="6" fill="#b7102a" opacity="0.7"/>
+                    <circle cx="300" cy="350" r="6" fill="#b7102a" opacity="0.7"/>
+                    <circle cx="420" cy="180" r="5" fill="#745b00" opacity="0.7"/>
+                    <circle cx="180" cy="320" r="5" fill="#745b00" opacity="0.7"/>
+                    <text x="290" y="240" font-family="Manrope,sans-serif" font-size="10" fill="#171d18" font-weight="700">Plateau</text>
+                    <text x="125" y="240" font-family="Manrope,sans-serif" font-size="9" fill="#171d18">Colobane</text>
+                    <text x="425" y="240" font-family="Manrope,sans-serif" font-size="9" fill="#171d18">Pikine</text>
+                    <text x="270" y="140" font-family="Manrope,sans-serif" font-size="9" fill="#171d18">Maristes</text>
+                    <text x="270" y="365" font-family="Manrope,sans-serif" font-size="9" fill="#171d18">Yoff</text>
+                    <text x="390" y="172" font-family="Manrope,sans-serif" font-size="9" fill="#171d18">Mermoz</text>
+                    <text x="140" y="315" font-family="Manrope,sans-serif" font-size="9" fill="#171d18">HLM</text>
+                </svg>
+
+                <div class="map-controls">
+                    <div class="map-ctrl-btn" title="Zoom +">＋</div>
+                    <div class="map-ctrl-btn" title="Zoom -">－</div>
+                    <div class="map-ctrl-btn" title="Ma position">📍</div>
+                    <div class="map-ctrl-btn" title="Couches">🗂</div>
+                </div>
+
+                <div class="live-badge">
+                    <div class="live-dot"></div>
+                    En direct · 12 bus actifs
+                </div>
+
+                <div class="map-legend">
+                    <h4>Légende</h4>
+                    <div class="legend-item"><div class="legend-dot" style="background:#006a38"></div> Ligne régulière</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#b7102a"></div> Ligne express</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#9aa69c"></div> Arrêt</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

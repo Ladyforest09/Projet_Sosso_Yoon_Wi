@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications – Yoon Wi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .notif-layout { max-width: 760px; margin: 0 auto; padding: 0 24px 60px; }
+        .notif-group-title { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #4a554e; margin: 28px 0 14px; }
+        .notif-item { position: relative; }
+        .notif-unread-bar { position: absolute; left: -12px; top: 20px; bottom: 20px; width: 3px; background: var(--primary); border-radius: 99px; }
+        .mark-all { background: var(--surface-lowest); border-radius: 99px; padding: 10px 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; box-shadow: var(--shadow-editorial); transition: background 0.2s; }
+        .mark-all:hover { background: var(--surface-container-highest); }
+        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .notif-count { font-family: 'Manrope', sans-serif; font-size: 0.9rem; color: #4a554e; }
+        .notif-count strong { color: var(--primary); }
+        .settings-card { background: var(--surface-lowest); border-radius: var(--radius-xl); padding: 28px; box-shadow: var(--shadow-editorial); margin-top: 32px; }
+        .settings-card h3 { font-family: 'Manrope', sans-serif; font-weight: 700; margin-bottom: 20px; }
+        .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; }
+        .toggle-row:not(:last-child) { border-bottom: 1px solid var(--surface-container-low); }
+        .toggle-label { font-weight: 500; font-size: 0.9rem; }
+        .toggle-sub { font-size: 0.8rem; color: #4a554e; margin-top: 2px; }
+        .toggle-switch { width: 46px; height: 26px; background: var(--primary); border-radius: 13px; position: relative; cursor: pointer; flex-shrink: 0; transition: background 0.2s; }
+        .toggle-switch.off { background: var(--surface-container-highest); }
+        .toggle-switch::after { content: ''; position: absolute; width: 20px; height: 20px; background: white; border-radius: 50%; top: 3px; right: 3px; transition: right 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+        .toggle-switch.off::after { right: auto; left: 3px; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo">🚌 Yoon Wi</a>
+            <div class="nav-links">
+                <a href="carte.html">Carte</a>
+                <a href="itineraires.html">Itinéraires</a>
+                <a href="favoris.html">Favoris</a>
+            </div>
+            <div class="profile-actions">
+                <a href="notifications.html" class="icon" style="background:var(--secondary-container)">🔔</a>
+                <a href="profil.html" class="icon">👤</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="page-header-content">
+            <a href="index.html" class="back-link">← Retour à l'accueil</a>
+            <div class="page-title">🔔 Notifications</div>
+            <div class="page-subtitle">Alertes de trafic, retards et mises à jour en temps réel</div>
+        </div>
+    </div>
+
+    <div class="notif-layout">
+        <div class="topbar">
+            <div class="notif-count">Vous avez <strong>4 nouvelles</strong> notifications</div>
+            <button class="mark-all" onclick="markAll()">✓ Tout marquer comme lu</button>
+        </div>
+
+        <div class="notif-group-title">Aujourd'hui</div>
+
+        <div class="notif-item" id="n1">
+            <div class="notif-unread-bar" id="bar1"></div>
+            <div class="notif-item-inner notif-item" style="padding-left:4px">
+                <div style="display:flex;align-items:flex-start;gap:16px;background:var(--surface-lowest);border-radius:16px;padding:20px;box-shadow:var(--shadow-editorial);margin-bottom:12px;">
+                    <div class="notif-icon yellow">⚠️</div>
+                    <div style="flex:1">
+                        <div class="notif-title">Retard sur la ligne 44</div>
+                        <div class="notif-desc">Un retard de 10 minutes est signalé sur la ligne Parcelles ➔ Plateau en raison d'un accident sur la VDN.</div>
+                        <div class="notif-time">Il y a 8 minutes</div>
+                    </div>
+                    <div class="notif-unread" id="dot1"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="notif-item" id="n2">
+            <div class="notif-unread-bar" id="bar2"></div>
+            <div style="display:flex;align-items:flex-start;gap:16px;background:var(--surface-lowest);border-radius:16px;padding:20px;box-shadow:var(--shadow-editorial);margin-bottom:12px;padding-left:24px">
+                <div class="notif-icon green">🚌</div>
+                <div style="flex:1">
+                    <div class="notif-title">Votre bus arrive dans 5 min</div>
+                    <div class="notif-desc">La ligne 37 (ESP ➔ Maristes) arrivera à l'arrêt UCAD dans environ 5 minutes. Préparez-vous !</div>
+                    <div class="notif-time">Il y a 23 minutes</div>
+                </div>
+                <div class="notif-unread" id="dot2"></div>
+            </div>
+        </div>
+
+        <div class="notif-item" id="n3">
+            <div class="notif-unread-bar" id="bar3"></div>
+            <div style="display:flex;align-items:flex-start;gap:16px;background:var(--surface-lowest);border-radius:16px;padding:20px;box-shadow:var(--shadow-editorial);margin-bottom:12px;padding-left:24px">
+                <div class="notif-icon red">🚨</div>
+                <div style="flex:1">
+                    <div class="notif-title">Perturbation – Corniche Ouest</div>
+                    <div class="notif-desc">La Corniche Ouest est partiellement fermée pour travaux. Les lignes 11 et 33 sont déviées via la Rue Carnot jusqu'à 18h00.</div>
+                    <div class="notif-time">Il y a 1 heure</div>
+                </div>
+                <div class="notif-unread" id="dot3"></div>
+            </div>
+        </div>
+
+        <div class="notif-item" id="n4">
+            <div class="notif-unread-bar" id="bar4"></div>
+            <div style="display:flex;align-items:flex-start;gap:16px;background:var(--surface-lowest);border-radius:16px;padding:20px;box-shadow:var(--shadow-editorial);margin-bottom:12px;padding-left:24px">
+                <div class="notif-icon blue">✨</div>
+                <div style="flex:1">
+                    <div class="notif-title">Nouvelle ligne disponible !</div>
+                    <div class="notif-desc">La ligne 11 (Plateau ➔ Corniche Ouest) est maintenant disponible dans votre application. Découvrez cet itinéraire !</div>
+                    <div class="notif-time">Il y a 2 heures</div>
+                </div>
+                <div class="notif-unread" id="dot4"></div>
+            </div>
+        </div>
+
+        <div class="notif-group-title">Hier</div>
+
+        <div style="display:flex;align-items:flex-start;gap:16px;background:var(--surface-lowest);border-radius:16px;padding:20px;box-shadow:var(--shadow-editorial);margin-bottom:12px;opacity:0.7">
+            <div class="notif-icon green">✅</div>
+            <div style="flex:1">
+                <div class="notif-title">Trajet effectué avec succès</div>
+                <div class="notif-desc">Vous avez pris la ligne BRT de Petersen à Keur Massar. Durée : 58 minutes.</div>
+                <div class="notif-time">Hier à 17:42</div>
+            </div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:16px;background:var(--surface-lowest);border-radius:16px;padding:20px;box-shadow:var(--shadow-editorial);margin-bottom:12px;opacity:0.7">
+            <div class="notif-icon yellow">🌧️</div>
+            <div style="flex:1">
+                <div class="notif-title">Alerte météo – Ralentissements prévus</div>
+                <div class="notif-desc">Des pluies sont prévues cet après-midi à Dakar. Des ralentissements sont attendus sur les lignes 37, 56 et 121.</div>
+                <div class="notif-time">Hier à 10:15</div>
+            </div>
+        </div>
+
+        <!-- Préférences de notifications -->
+        <div class="settings-card">
+            <h3>⚙️ Préférences de notifications</h3>
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">Alertes de retard</div>
+                    <div class="toggle-sub">Soyez prévenu des retards sur vos lignes favorites</div>
+                </div>
+                <div class="toggle-switch" onclick="this.classList.toggle('off')"></div>
+            </div>
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">Rappels d'arrivée de bus</div>
+                    <div class="toggle-sub">Notification 5 minutes avant l'arrivée</div>
+                </div>
+                <div class="toggle-switch" onclick="this.classList.toggle('off')"></div>
+            </div>
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">Perturbations de trafic</div>
+                    <div class="toggle-sub">Déviations, travaux et fermetures de routes</div>
+                </div>
+                <div class="toggle-switch" onclick="this.classList.toggle('off')"></div>
+            </div>
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">Nouvelles lignes & mises à jour</div>
+                    <div class="toggle-sub">Découvrez les nouvelles fonctionnalités</div>
+                </div>
+                <div class="toggle-switch off" onclick="this.classList.toggle('off')"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function markAll() {
+            [1,2,3,4].forEach(i => {
+                const bar = document.getElementById('bar'+i);
+                const dot = document.getElementById('dot'+i);
+                if (bar) bar.style.opacity = '0';
+                if (dot) dot.style.opacity = '0';
+            });
+            document.querySelector('.notif-count').innerHTML = 'Toutes les notifications ont été <strong>lues</strong>';
+        }
+    </script>
+</body>
+</html>

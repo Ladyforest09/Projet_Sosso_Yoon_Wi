@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itinéraires – Yoon Wi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .itin-layout { max-width: 1200px; margin: 0 auto; padding: 0 24px 60px; }
+        .filter-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
+        .filter-chip { background: var(--surface-lowest); border-radius: 99px; padding: 10px 20px; font-weight: 600; font-size: 0.85rem; cursor: pointer; box-shadow: var(--shadow-editorial); transition: all 0.2s; }
+        .filter-chip:hover, .filter-chip.active { background: var(--primary); color: white; }
+        .search-itin { display: flex; gap: 12px; margin-bottom: 32px; }
+        .search-itin input { flex: 1; background: var(--surface-lowest); border-radius: 14px; padding: 14px 20px; font-family: 'Inter', sans-serif; font-size: 0.95rem; outline: none; box-shadow: var(--shadow-editorial); color: var(--on-surface); }
+        .search-itin button { background: var(--primary-gradient); color: white; border-radius: 14px; padding: 14px 28px; font-family: 'Manrope', sans-serif; font-weight: 700; cursor: pointer; }
+        .routes-count { font-size: 0.9rem; color: #4a554e; margin-bottom: 20px; }
+        .routes-count strong { color: var(--on-surface); font-family: 'Manrope', sans-serif; }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .modal-overlay.open { display: flex; }
+        .modal { background: var(--surface-lowest); border-radius: 28px; padding: 40px; max-width: 560px; width: 90%; box-shadow: 0 24px 64px rgba(0,0,0,0.2); animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+        .modal-close { float: right; font-size: 1.5rem; cursor: pointer; color: #9aa69c; margin-top: -8px; }
+        .modal-badge { width: 72px; height: 72px; border-radius: 20px; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1.6rem; color: white; margin-bottom: 20px; }
+        .modal-badge.express { background: linear-gradient(135deg, #b7102a, #e53935); }
+        .modal-title { font-family: 'Manrope', sans-serif; font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; }
+        .modal-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
+        .modal-stops { margin-bottom: 24px; }
+        .modal-stops h4 { font-family: 'Manrope', sans-serif; font-weight: 700; margin-bottom: 16px; }
+        .stops-list { display: flex; flex-direction: column; }
+        .stop-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; position: relative; }
+        .stop-item:not(:last-child)::after { content: ''; position: absolute; left: 15px; top: 36px; width: 2px; height: 20px; background: var(--surface-container-highest); }
+        .stop-dot { width: 32px; height: 32px; border-radius: 50%; background: var(--surface-container-low); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; }
+        .stop-dot.first, .stop-dot.last { background: var(--primary); color: white; }
+        .stop-name { font-weight: 500; font-size: 0.9rem; }
+        .stop-time { margin-left: auto; font-size: 0.8rem; color: #4a554e; }
+        .modal-fav-btn { width: 100%; background: var(--surface-container-low); padding: 14px; border-radius: 14px; font-family: 'Manrope', sans-serif; font-weight: 700; cursor: pointer; font-size: 0.95rem; transition: background 0.2s; }
+        .modal-fav-btn:hover { background: var(--secondary-container); }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo">🚌 Yoon Wi</a>
+            <div class="nav-links">
+                <a href="carte.html">Carte</a>
+                <a href="itineraires.html" style="color:var(--primary);font-weight:700">Itinéraires</a>
+                <a href="favoris.html">Favoris</a>
+            </div>
+            <div class="profile-actions">
+                <a href="notifications.html" class="icon">🔔</a>
+                <a href="profil.html" class="icon">👤</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="page-header-content">
+            <a href="index.html" class="back-link">← Retour à l'accueil</a>
+            <div class="page-title">📍 Itinéraires</div>
+            <div class="page-subtitle">12 lignes de bus Tata disponibles à Dakar</div>
+        </div>
+    </div>
+
+    <div class="itin-layout">
+        <div class="search-itin">
+            <input type="text" id="itin-search" placeholder="🔍 Rechercher une ligne, un arrêt...">
+            <button onclick="filterRoutes()">Rechercher</button>
+        </div>
+
+        <div class="filter-bar">
+            <div class="filter-chip active" onclick="setFilter('tous', this)">Toutes les lignes</div>
+            <div class="filter-chip" onclick="setFilter('regulier', this)">🟢 Régulier</div>
+            <div class="filter-chip" onclick="setFilter('express', this)">🔴 Express</div>
+            <div class="filter-chip" onclick="setFilter('150', this)">🎫 150 FCFA</div>
+        </div>
+
+        <div class="routes-count">Affichage de <strong id="count">12</strong> ligne(s)</div>
+
+        <div id="routes-list"></div>
+    </div>
+
+    <div class="modal-overlay" id="modal" onclick="closeModal(event)">
+        <div class="modal" id="modal-content">
+            <span class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">✕</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script>
+        const busRoutes = [
+            { id: "37",  name: "ESP ➔ Maristes",            time: "25 min", price: "150 FCFA", type: "regulier", stops: ["ESP", "UCAD", "Point E", "Castors", "Maristes"],                       times: ["0min","7min","13min","18min","25min"] },
+            { id: "121", name: "Keur Massar ➔ UCAD",        time: "45 min", price: "300 FCFA", type: "express",  stops: ["Keur Massar", "Pikine", "Colobane", "Fass", "UCAD"],                   times: ["0min","10min","22min","35min","45min"] },
+            { id: "44",  name: "Parcelles ➔ Plateau",       time: "30 min", price: "150 FCFA", type: "regulier", stops: ["Parcelles Assainies", "Grand Médine", "Palais de Justice", "Plateau"], times: ["0min","10min","20min","30min"] },
+            { id: "78",  name: "Ouakam ➔ Maristes",         time: "40 min", price: "200 FCFA", type: "regulier", stops: ["Ouakam", "Mermoz", "Liberté 6", "Maristes"],                           times: ["0min","15min","28min","40min"] },
+            { id: "15",  name: "HLM ➔ Médina",              time: "18 min", price: "150 FCFA", type: "regulier", stops: ["HLM", "Gueule Tapée", "Médina", "Plateau"],                            times: ["0min","6min","12min","18min"] },
+            { id: "56",  name: "Yoff ➔ Sandaga",            time: "35 min", price: "200 FCFA", type: "express",  stops: ["Yoff", "Ngor", "Almadies", "Mermoz", "Sandaga"],                      times: ["0min","8min","15min","24min","35min"] },
+            { id: "8",   name: "Guédiawaye ➔ Colobane",    time: "50 min", price: "250 FCFA", type: "regulier", stops: ["Guédiawaye", "Pikine", "Thiaroye", "Colobane"],                        times: ["0min","15min","30min","50min"] },
+            { id: "92",  name: "Liberté 5 ➔ Grand Dakar",  time: "22 min", price: "150 FCFA", type: "regulier", stops: ["Liberté 5", "Liberté 6", "HLM", "Grand Dakar"],                       times: ["0min","7min","14min","22min"] },
+            { id: "24",  name: "Sicap ➔ Île de Gorée",     time: "45 min", price: "400 FCFA", type: "express",  stops: ["Sicap", "Plateau", "Port", "Gorée (Ferry)"],                           times: ["0min","15min","28min","45min"] },
+            { id: "33",  name: "Castors ➔ Almadies",       time: "28 min", price: "200 FCFA", type: "regulier", stops: ["Castors", "Fann Résidence", "Mermoz", "Almadies"],                     times: ["0min","9min","18min","28min"] },
+            { id: "67",  name: "Pikine ➔ Soumbédioune",    time: "1h 10",  price: "300 FCFA", type: "regulier", stops: ["Pikine", "Thiaroye", "Colobane", "Soumbédioune"],                      times: ["0min","20min","45min","1h10"] },
+            { id: "11",  name: "Plateau ➔ Corniche Ouest", time: "20 min", price: "150 FCFA", type: "regulier", stops: ["Plateau", "Soumbédioune", "Corniche", "Almadies"],                     times: ["0min","7min","13min","20min"] },
+        ];
+
+        let currentFilter = 'tous';
+
+        function getTypeLabel(type) {
+            if (type === 'express') return '<span class="badge-red">Express</span>';
+            return '<span class="badge-green">Régulier</span>';
+        }
+
+        function renderRoutes(routes) {
+            const list = document.getElementById('routes-list');
+            document.getElementById('count').textContent = routes.length;
+            list.innerHTML = routes.map((r, i) => `
+                <div class="route-detail-card" onclick="openModal(${i})">
+                    <div class="rdcard-badge" style="${r.type==='express'?'background:linear-gradient(135deg,#b7102a,#e53935);color:white':'background:var(--secondary-container);color:var(--on-surface)'}">${r.id}</div>
+                    <div class="rdcard-info">
+                        <div class="rdcard-name">${r.name}</div>
+                        <div class="rdcard-stops">🛑 ${r.stops.join(' · ')}</div>
+                        <div class="rdcard-chips">
+                            <span class="rdcard-chip">⏱ ${r.time}</span>
+                            <span class="rdcard-chip">🎫 ${r.price}</span>
+                            ${getTypeLabel(r.type)}
+                        </div>
+                    </div>
+                    <div class="rdcard-arrow">›</div>
+                </div>
+            `).join('');
+        }
+
+        function openModal(idx) {
+            const r = filteredRoutes()[idx];
+            const full = busRoutes.find(x => x.id === r.id);
+            const stopsHTML = full.stops.map((s, i) => `
+                <div class="stop-item">
+                    <div class="stop-dot ${i===0?'first':i===full.stops.length-1?'last':''}">${i===0?'A':i===full.stops.length-1?'B':i+1}</div>
+                    <div class="stop-name">${s}</div>
+                    <div class="stop-time">${full.times[i]}</div>
+                </div>`).join('');
+            document.getElementById('modal-body').innerHTML = `
+                <div class="modal-badge ${full.type==='express'?'express':''}">${full.id}</div>
+                <div class="modal-title">${full.name}</div>
+                <div class="modal-meta">
+                    <span class="rdcard-chip">⏱ ${full.time}</span>
+                    <span class="rdcard-chip">🎫 ${full.price}</span>
+                    ${getTypeLabel(full.type)}
+                </div>
+                <div class="modal-stops">
+                    <h4>🛑 Arrêts</h4>
+                    <div class="stops-list">${stopsHTML}</div>
+                </div>
+                <button class="modal-fav-btn" onclick="alert('⭐ Ligne ${full.id} ajoutée aux favoris !')">⭐ Ajouter aux favoris</button>
+            `;
+            document.getElementById('modal').classList.add('open');
+        }
+
+        function closeModal(e) {
+            if (e.target === document.getElementById('modal')) document.getElementById('modal').classList.remove('open');
+        }
+
+        function filteredRoutes() {
+            const q = document.getElementById('itin-search').value.toLowerCase();
+            return busRoutes.filter(r => {
+                const matchFilter = currentFilter === 'tous' || r.type === currentFilter || (currentFilter === '150' && r.price === '150 FCFA');
+                const matchSearch = q === '' || r.name.toLowerCase().includes(q) || r.id.toLowerCase().includes(q) || r.stops.some(s => s.toLowerCase().includes(q));
+                return matchFilter && matchSearch;
+            });
+        }
+
+        function filterRoutes() { renderRoutes(filteredRoutes()); }
+
+        function setFilter(f, el) {
+            currentFilter = f;
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            filterRoutes();
+        }
+
+        document.getElementById('itin-search').addEventListener('input', filterRoutes);
+        renderRoutes(busRoutes);
+    </script>
+</body>
+</html>

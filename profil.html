@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil – Yoon Wi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .profil-layout { max-width: 760px; margin: 0 auto; padding: 0 24px 60px; }
+        .profil-hero { background: var(--surface-lowest); border-radius: var(--radius-xl); padding: 40px; box-shadow: var(--shadow-editorial); text-align: center; margin-bottom: 24px; }
+        .edit-btn { display: inline-block; background: var(--surface-container-low); border-radius: 99px; padding: 10px 24px; font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.85rem; cursor: pointer; margin-top: 16px; transition: background 0.2s; }
+        .edit-btn:hover { background: var(--secondary-container); }
+        .section-card { background: var(--surface-lowest); border-radius: var(--radius-xl); padding: 28px; box-shadow: var(--shadow-editorial); margin-bottom: 20px; }
+        .section-card h3 { font-family: 'Manrope', sans-serif; font-weight: 700; margin-bottom: 20px; font-size: 1rem; }
+        .setting-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; cursor: pointer; border-radius: 10px; transition: background 0.15s; }
+        .setting-row:hover { background: var(--surface-container-low); padding-left: 8px; padding-right: 8px; margin: 0 -8px; }
+        .setting-row:not(:last-child) { border-bottom: 1px solid var(--surface-container-low); }
+        .setting-left { display: flex; align-items: center; gap: 14px; }
+        .setting-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+        .setting-icon.green { background: #e8f5e9; }
+        .setting-icon.yellow { background: #fff8e1; }
+        .setting-icon.red { background: #fdecea; }
+        .setting-icon.blue { background: #e3f2fd; }
+        .setting-icon.purple { background: #f3e5f5; }
+        .setting-label { font-weight: 500; font-size: 0.9rem; }
+        .setting-sub { font-size: 0.78rem; color: #4a554e; margin-top: 2px; }
+        .setting-right { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: #4a554e; }
+        .chevron { color: #9aa69c; font-size: 1.1rem; }
+        .tag { background: var(--surface-container-low); border-radius: 8px; padding: 3px 8px; font-size: 0.78rem; font-weight: 600; }
+        .logout-btn { width: 100%; background: #fdecea; color: var(--tertiary); padding: 16px; border-radius: 14px; font-family: 'Manrope', sans-serif; font-weight: 700; cursor: pointer; font-size: 0.95rem; transition: background 0.2s; margin-top: 8px; }
+        .logout-btn:hover { background: #ffcdd2; }
+        .member-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--secondary-container); border-radius: 99px; padding: 6px 14px; font-family: 'Manrope', sans-serif; font-size: 0.82rem; font-weight: 700; color: var(--secondary); margin-top: 12px; }
+        .toggle-switch { width: 46px; height: 26px; background: var(--primary); border-radius: 13px; position: relative; cursor: pointer; flex-shrink: 0; transition: background 0.2s; }
+        .toggle-switch.off { background: var(--surface-container-highest); }
+        .toggle-switch::after { content: ''; position: absolute; width: 20px; height: 20px; background: white; border-radius: 50%; top: 3px; right: 3px; transition: all 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+        .toggle-switch.off::after { right: auto; left: 3px; }
+        .recent-trip { display: flex; align-items: center; gap: 14px; padding: 12px 0; }
+        .recent-trip:not(:last-child) { border-bottom: 1px solid var(--surface-container-low); }
+        .trip-line { width: 36px; height: 36px; border-radius: 10px; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.8rem; color: white; flex-shrink: 0; }
+        .trip-info { flex: 1; }
+        .trip-name { font-weight: 600; font-size: 0.88rem; }
+        .trip-date { font-size: 0.78rem; color: #4a554e; }
+        .trip-price { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.85rem; color: var(--primary); }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo">🚌 Yoon Wi</a>
+            <div class="nav-links">
+                <a href="carte.html">Carte</a>
+                <a href="itineraires.html">Itinéraires</a>
+                <a href="favoris.html">Favoris</a>
+            </div>
+            <div class="profile-actions">
+                <a href="notifications.html" class="icon">🔔</a>
+                <a href="profil.html" class="icon" style="background:var(--secondary-container)">👤</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="page-header-content">
+            <a href="index.html" class="back-link">← Retour à l'accueil</a>
+            <div class="page-title">👤 Mon Profil</div>
+            <div class="page-subtitle">Gérez votre compte et vos préférences</div>
+        </div>
+    </div>
+
+    <div class="profil-layout">
+        <!-- Carte profil -->
+        <div class="profil-hero">
+            <div class="profile-avatar">👤</div>
+            <div class="profile-name">Amadou Diallo</div>
+            <div class="profile-email">amadou.diallo@gmail.com</div>
+            <div class="member-badge">⭐ Membre depuis Mars 2024</div>
+            <div class="edit-btn" onclick="alert('✏️ Modification du profil...')">✏️ Modifier le profil</div>
+        </div>
+
+        <!-- Statistiques -->
+        <div class="section-card">
+            <h3>📊 Mes statistiques</h3>
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="stat-number">47</div>
+                    <div class="stat-label">Trajets ce mois</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">23h</div>
+                    <div class="stat-label">Temps en bus</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">8 550</div>
+                    <div class="stat-label">FCFA dépensés</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Lignes favorites</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trajets récents -->
+        <div class="section-card">
+            <h3>🕐 Trajets récents</h3>
+            <div class="recent-trip">
+                <div class="trip-line">37</div>
+                <div class="trip-info">
+                    <div class="trip-name">ESP ➔ Maristes</div>
+                    <div class="trip-date">Aujourd'hui, 08:12</div>
+                </div>
+                <div class="trip-price">150 FCFA</div>
+            </div>
+            <div class="recent-trip">
+                <div class="trip-line" style="background:linear-gradient(135deg,#006a38,#00c853)">BRT</div>
+                <div class="trip-info">
+                    <div class="trip-name">Petersen ➔ Keur Massar</div>
+                    <div class="trip-date">Hier, 17:35</div>
+                </div>
+                <div class="trip-price">500 FCFA</div>
+            </div>
+            <div class="recent-trip">
+                <div class="trip-line">44</div>
+                <div class="trip-info">
+                    <div class="trip-name">Parcelles ➔ Plateau</div>
+                    <div class="trip-date">Hier, 07:58</div>
+                </div>
+                <div class="trip-price">150 FCFA</div>
+            </div>
+            <div class="recent-trip">
+                <div class="trip-line" style="background:linear-gradient(135deg,#0277bd,#0288d1)">TER</div>
+                <div class="trip-info">
+                    <div class="trip-name">Dakar ➔ AIBD</div>
+                    <div class="trip-date">Lundi, 06:45</div>
+                </div>
+                <div class="trip-price">2 500 FCFA</div>
+            </div>
+        </div>
+
+        <!-- Paramètres du compte -->
+        <div class="section-card">
+            <h3>⚙️ Paramètres du compte</h3>
+            <div class="setting-row" onclick="alert('📝 Modifier les informations personnelles')">
+                <div class="setting-left">
+                    <div class="setting-icon blue">👤</div>
+                    <div>
+                        <div class="setting-label">Informations personnelles</div>
+                        <div class="setting-sub">Nom, email, téléphone</div>
+                    </div>
+                </div>
+                <div class="setting-right"><span class="chevron">›</span></div>
+            </div>
+            <div class="setting-row" onclick="alert('🔒 Modifier le mot de passe')">
+                <div class="setting-left">
+                    <div class="setting-icon green">🔒</div>
+                    <div>
+                        <div class="setting-label">Sécurité et mot de passe</div>
+                        <div class="setting-sub">Modifier votre mot de passe</div>
+                    </div>
+                </div>
+                <div class="setting-right"><span class="chevron">›</span></div>
+            </div>
+            <div class="setting-row">
+                <div class="setting-left">
+                    <div class="setting-icon yellow">🌙</div>
+                    <div>
+                        <div class="setting-label">Mode sombre</div>
+                        <div class="setting-sub">Activer le thème sombre</div>
+                    </div>
+                </div>
+                <div class="setting-right">
+                    <div class="toggle-switch off" onclick="this.classList.toggle('off')"></div>
+                </div>
+            </div>
+            <div class="setting-row">
+                <div class="setting-left">
+                    <div class="setting-icon blue">📍</div>
+                    <div>
+                        <div class="setting-label">Géolocalisation</div>
+                        <div class="setting-sub">Partager ma position pour les trajets</div>
+                    </div>
+                </div>
+                <div class="setting-right">
+                    <div class="toggle-switch" onclick="this.classList.toggle('off')"></div>
+                </div>
+            </div>
+            <div class="setting-row" onclick="alert('🌍 Changer la langue : Français / Wolof / English')">
+                <div class="setting-left">
+                    <div class="setting-icon purple">🌍</div>
+                    <div>
+                        <div class="setting-label">Langue</div>
+                        <div class="setting-sub">Changer la langue de l'application</div>
+                    </div>
+                </div>
+                <div class="setting-right">
+                    <span class="tag">Français</span>
+                    <span class="chevron">›</span>
+                </div>
+            </div>
+            <div class="setting-row" onclick="alert('💳 Gérer vos moyens de paiement')">
+                <div class="setting-left">
+                    <div class="setting-icon green">💳</div>
+                    <div>
+                        <div class="setting-label">Paiement</div>
+                        <div class="setting-sub">Wave, Orange Money, espèces</div>
+                    </div>
+                </div>
+                <div class="setting-right">
+                    <span class="tag">Wave</span>
+                    <span class="chevron">›</span>
+                </div>
+            </div>
+            <div class="setting-row" onclick="alert('🆘 Aide et assistance Yoon Wi')">
+                <div class="setting-left">
+                    <div class="setting-icon yellow">🆘</div>
+                    <div>
+                        <div class="setting-label">Aide & Support</div>
+                        <div class="setting-sub">FAQ, contacter l'équipe</div>
+                    </div>
+                </div>
+                <div class="setting-right"><span class="chevron">›</span></div>
+            </div>
+        </div>
+
+        <!-- Déconnexion -->
+        <button class="logout-btn" onclick="alert('👋 Déconnexion...')">🚪 Se déconnecter</button>
+    </div>
+</body>
+</html>
